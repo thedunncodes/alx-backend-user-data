@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from flask import request
 from typing import List, TypeVar
+from flask import Flask, request
 
 
 class Auth:
@@ -18,10 +18,10 @@ class Auth:
         """ Authorizatio header
         """
 
-        return request
+        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """ Current user
         """
 
-        return request
+        return None
