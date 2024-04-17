@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Auth module """
+from flask import request
 from typing import List, TypeVar
-from flask import Flask, request
 
 
 class Auth:
@@ -12,10 +12,20 @@ class Auth:
         """ Require auth
         """
 
-        return False
+        if path is None or excluded_paths is None or not excluded_paths:
+            return True
+
+        for paths in excluded_paths:
+            if paths[-1] == '/':
+                if path == paths[:-1]:
+                    return False
+            if paths == path:
+                return False
+
+        return True
 
     def authorization_header(self, request=None) -> str:
-        """ Authorizatio header
+        """ Authorization header
         """
 
         return None
