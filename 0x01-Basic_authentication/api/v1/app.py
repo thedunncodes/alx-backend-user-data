@@ -38,6 +38,10 @@ def forbidden(error) -> str:
 
 @app.before_request
 def beforeRequest():
+    """ Handles, checks and Authorizes all requests
+    before each routes
+    """
+
     if auth:
         path_auth = auth.require_auth(request.path,
                                       ['/api/v1/status/',
