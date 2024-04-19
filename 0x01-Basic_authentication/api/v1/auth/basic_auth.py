@@ -73,3 +73,27 @@ class BasicAuth(Auth):
             if user[0].is_valid_password(user_pwd):
                 return user[0]
         return None
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """ User authentication Gateway"""
+
+        if request is None:
+            return None
+        auth_data = self.authorization_header(request)
+
+        if auth_data:
+            user_raw_credentials = self.extract_base64_authorization_header(
+                auth_data)
+
+            if user_raw_credentials:
+                user_credentials = self.decode_base64_authorization_header(
+                    user_raw_credentials)
+
+                if user_credentials:
+                    user_info = self.extract_user_credentials(user_credentials)
+                    user_email, user_password = user_info[0], user_info[1]
+                    required_user = self.user_object_from_credentials(
+                        user_email, user_password)
+                    return required_user
+
+        return None
