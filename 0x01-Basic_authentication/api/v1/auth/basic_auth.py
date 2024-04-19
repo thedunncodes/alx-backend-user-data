@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """ BasicAuth module """
 from .auth import Auth
+from typing import TypeVar
+from api.v1.views import User
 import base64
 
 
@@ -38,3 +40,36 @@ class BasicAuth(Auth):
                 return data.decode("utf-8")
             except Exception:
                 return None
+
+    def extract_user_credentials(self,
+                                 decoded_base64_authorization_header: str)\
+            -> (str, str):
+        """ Returns user credentials:
+        Username and email
+        """
+
+        if decoded_base64_authorization_header is None:
+            return (None, None)
+
+        if isinstance(decoded_base64_authorization_header, str):
+            if ":" in decoded_base64_authorization_header:
+                split_data = decoded_base64_authorization_header.split(":")
+                return (split_data[0], split_data[1])
+
+        return (None, None)
+
+    def user_object_from_credentials(self, user_email: str, user_pwd: str)\
+            -> TypeVar('User'):
+        """ Verifies and returns a
+        Credible user present in database
+        """
+        if user_email is None or user_pwd is None:
+            return None
+
+        if isinstance(user_email, str) and isinstance(user_pwd, str):
+            user = User.search({"email": user_email})
+            if not user:
+                return None
+            if user[0].is_valid_password(user_pwd):
+                return user[0]
+        return None
