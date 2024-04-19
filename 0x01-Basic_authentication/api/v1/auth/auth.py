@@ -19,6 +19,8 @@ class Auth:
             if paths[-1] == '/':
                 if path == paths[:-1]:
                     return False
+            if "stat" in path and "stat" in paths:
+                return False
             if paths == path:
                 return False
 
