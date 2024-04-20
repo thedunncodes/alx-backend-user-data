@@ -22,6 +22,9 @@ class Auth:
             last_path_index = paths.rfind("/")
             delimitter_index = paths.find("*")
 
+            if delimitter_index == -1:
+                delimitter_index = False
+
             if delimitter_index:
                 delimitter_string = paths[last_path_index:delimitter_index]
                 if delimitter_string in path and delimitter_string in paths:
