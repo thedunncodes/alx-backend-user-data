@@ -2,6 +2,7 @@
 """ Auth module """
 from flask import request
 from typing import List, TypeVar
+from os import getenv
 
 
 class Auth:
@@ -19,6 +20,7 @@ class Auth:
             if paths[-1] == '/':
                 if path == paths[:-1]:
                     return False
+
             last_path_index = paths.rfind("/")
             delimitter_index = paths.find("*")
 
@@ -29,6 +31,7 @@ class Auth:
                 delimitter_string = paths[last_path_index:delimitter_index]
                 if delimitter_string in path and delimitter_string in paths:
                     return False
+
             if paths == path:
                 return False
 
@@ -48,3 +51,15 @@ class Auth:
         """
 
         return None
+
+    def session_cookie(self, request=None):
+        """ Session cookie
+        Return:
+          - Cookie value
+        """
+        if request is None:
+            return None
+
+        session_name = getenv('SESSION_NAME')
+        cookie_value = request.cookies.get(session_name)
+        return cookie_value
