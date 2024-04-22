@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """ SessionAuth module """
 from .auth import Auth
+from models.user import User
 import uuid
 
 
@@ -39,3 +40,12 @@ class SessionAuth(Auth):
         user_id = self.user_id_by_session_id.get(session_id)
 
         return user_id
+
+    def current_user(self, request=None):
+        """ User authentication Gateway"""
+
+        cookie = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(cookie)
+        user = User.get(user_id)
+
+        return user
