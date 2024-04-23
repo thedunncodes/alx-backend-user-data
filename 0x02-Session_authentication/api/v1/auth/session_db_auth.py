@@ -40,6 +40,8 @@ class SessionDBAuth(SessionExpAuth):
           - None if timeout
         """
 
+        if session_id is None:
+            return None
         user = UserSession.search({"session_id": session_id})
         if not user:
             return None
