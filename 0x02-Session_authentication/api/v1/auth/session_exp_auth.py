@@ -14,8 +14,15 @@ class SessionExpAuth(SessionAuth):
 
     def __init__(self):
         """ SessionExpAuth init method"""
-        self.session_duration = int(getenv("SESSION_DURATION")) if\
-            int(getenv("SESSION_DURATION")) else 0
+
+        duration = getenv("SESSION_DURATION")
+        if duration:
+            try:
+                self.session_duration = int(duration)
+            except TypeError:
+                self.session_duration = 0
+        else:
+            self.session_duration = 0
 
     def create_session(self, user_id=None):
         """ Creates A session dict for a
