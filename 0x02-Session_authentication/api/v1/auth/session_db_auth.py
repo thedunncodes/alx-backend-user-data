@@ -48,18 +48,15 @@ class SessionDBAuth(SessionExpAuth):
             return None
         if not user:
             return None
-        session_dictionary = self.user_id_by_session_id.get(user[0].session_id)
         if self.session_duration <= 0:
-            return session_dictionary.get('user_id')
-        if not session_dictionary.get('created_at'):
-            return None
-        session_time = session_dictionary.get('created_at') +\
+            return user[0].user_id
+        session_time = user[0].created_at +\
             timedelta(seconds=self.session_duration)
 
         if session_time < datetime.now():
             return None
 
-        return session_dictionary.get('user_id')
+        return user[0].user_id
 
     def destroy_session(self, request=None):
         """ Deletes the user session / logout
