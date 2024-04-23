@@ -42,7 +42,10 @@ class SessionDBAuth(SessionExpAuth):
 
         if session_id is None:
             return None
-        user = UserSession.search({"session_id": session_id})
+        try:
+            user = UserSession.search({"session_id": session_id})
+        except KeyError:
+            return None
         if not user:
             return None
         session_dictionary = self.user_id_by_session_id.get(user[0].session_id)
