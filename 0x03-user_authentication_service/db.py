@@ -47,16 +47,16 @@ class DB:
         """ Find user by ID
         """
 
+        user_attr_dict = {}
         for k, v in kwargs.items():
-            if k == 'email':
-                email = v
+            if hasattr(User, k):
+                user_attr_dict[k] = v
             else:
                 raise InvalidRequestError()
         session = self._session
-        if not email:
-            return None
-        user = session.query(User).filter(User.email == email)
-        user = user.one()
+        for key, value in user_attr_dict.items():
+            query = session.query(User).filter(getattr(User, key) == value)
+            user = query.one()
         if not user:
             raise NoResultFound()
         return user
