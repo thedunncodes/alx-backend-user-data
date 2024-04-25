@@ -71,5 +71,3 @@ class DB:
             else:
                 raise InvalidRequestError()
         self._session.commit()
-
-        return None
