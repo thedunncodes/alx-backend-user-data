@@ -65,9 +65,11 @@ class DB:
         """ Updates user database
         """
         user = self.find_user_by(id=user_id)
+        if user is None:
+            return None
         for key, value in kwargs.items():
             if hasattr(User, key):
                 setattr(user, key, value)
             else:
-                raise InvalidRequestError()
+                raise ValueError()
         self._session.commit()
