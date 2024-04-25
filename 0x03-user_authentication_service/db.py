@@ -7,7 +7,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
 from user import Base, User
-from typing import TypeVar
 from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -59,5 +58,5 @@ class DB:
         user = session.query(User).filter(User.email == email)
         user = user.one()
         if not user:
-            return None
+            raise NoResultFound()
         return user
