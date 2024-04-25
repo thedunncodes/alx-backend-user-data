@@ -33,7 +33,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> TypeVar('User'):
+    def add_user(self, email: str, hashed_password: str) -> User:
         """ Adds a new user instance through
         User db schema
         """
@@ -44,7 +44,7 @@ class DB:
 
         return user
 
-    def find_user_by(self, **kwargs: str) -> TypeVar('User'):
+    def find_user_by(self, **kwargs: str) -> User:
         """ Find user by ID
         """
 
